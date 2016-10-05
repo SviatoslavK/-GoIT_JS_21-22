@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="dist/css/main.css">
+    </head>
+    <body>
+
+        <script type="text/template" id="template">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2 quiz__wrapper">
+                    <h1><%= title %></h1>
+                    <form name="quiz" id="quiz">
+                        <ol>
+                            <% for (let index in test) { %>
+                                <li><span class="quest"><%- test[index].text  %></span></li>
+                                <% for (let value of test[index].answers) { %>
+                                    <label>
+                                    <input type=radio name="q<%= +index+1 %>" value="<%= value %>"  onClick="Engine(<%= index %>, this.value)">
+                                    <span><%- value %></span><br/>
+                                    </label>
+                                <% } %>
+                            <% } %>
+                        </ol>
+                    </form>
+                    <button class="btn btn-primary" id="submit" onclick="Modal()"><%-btnValue%></button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_form"></div>
+        <div id="overlay" onClick="closeModal()"></div>
+        </script>
+        <script type="text/template" id="button"></script>
+        <script type="text/template" id="myModal">
+        <span id="modal_close" onClick="closeModal()">X</span>
+        <% let answerText = "Your result: "%>
+        <h1><%-answerText %></h1>
+        <% for (let index in yourAns) { %>
+            <% let num = +index + 1 %>
+            <% answerText = "Question №" + num + ":"%>
+            <span class="modal-quest"><%-answerText%></span><br/>
+            <% if (yourAns[index] != test[index].answers[test[index].correctAnswer]) {
+               answerText="Right answer: " + test[index].answers[test[index].correctAnswer]
+               print('<span>' + answerText + '</span><br/>')
+             }
+             else {
+                answerText = "Right! \n";
+                print('<span>' + answerText + '</span><br/>')
+                ++score;
+             } %>
+        <% } %>
+        <% answerText = 'Number of correct answers: ' + score%>
+        <span><%-answerText %></span><br/>
+        </script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script   src="https://code.jquery.com/jquery-2.2.4.js"   integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="   crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.js"></script>
+        <script type="text/javascript" src="dist/js/script.js"></script>
+    </body>
+</html>
